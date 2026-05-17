@@ -1,14 +1,16 @@
 package com.example.SpringSecurity6WithSpringBoot.model;
 
 import com.example.SpringSecurity6WithSpringBoot.entities.User;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
     User user;
 
@@ -19,7 +21,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //return List.of();
-        return Collections.singletonList( new SimpleGrantedAuthority("USER"));
+        return Collections.singleton( new SimpleGrantedAuthority("USER"));
     }
 
     @Override

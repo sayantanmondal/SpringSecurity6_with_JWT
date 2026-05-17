@@ -1,23 +1,21 @@
 package com.example.SpringSecurity6WithSpringBoot.service;
 
 import com.example.SpringSecurity6WithSpringBoot.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.example.SpringSecurity6WithSpringBoot.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    AuthenticationManager authManager;
 
+    UserRepository userRepository;
 
-    public String verifyUser(User user) {
-        Authentication authentication  = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
-        if(authentication.isAuthenticated())
-            return "success";
-        else return "failed";
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public User registerUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 }
